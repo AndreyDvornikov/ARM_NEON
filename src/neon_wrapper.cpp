@@ -18,7 +18,12 @@ int64_t process_array_neon(const int32_t* data, size_t n) {
 
     // Горизонтальное сложение: схлопываем 4 частичные суммы в одну [cite: 45, 71]
     // Примечание: vaddlvq_s32 доступна на ARMv8-A (64-бит) [cite: 74]
-    sum = vaddlvq_s32(acc); 
+    int32x2_t pair_sum =
+        vadd_s32(vget_low_s32(acc), vget_high_s32(acc));
+
+    pair_sum = vpadd_s32(pair_sum, pair_sum);
+
+    sum = vget_lane_s32(pair_sum, 0);
 
     // Обработка остатка (хвоста): от 0 до 3 элементов [cite: 72, 73]
     for (; i < n; ++i) {

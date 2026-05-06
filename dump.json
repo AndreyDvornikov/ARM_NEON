@@ -1,0 +1,32 @@
+[
+  {
+    "path": "./src/scalar.cpp",
+    "lines": 22,
+    "content": "#include <cstdint>\n#include <cstddef>\n\nint64_t process_array_scalar(const int32_t* data, size_t n)\n{\n int64_t sum = 0;\n\n for (size_t i = 0; i < n; ++i)\n {\n int32_t val = data[i];\n\n if (val > 0)\n {\n sum += val;\n }\n else if (val < 0)\n {\n sum -= val;\n }\n }\n\n return sum;\n}"
+  },
+  {
+    "path": "./src/main.cpp",
+    "lines": 50,
+    "content": "#include <iostream>\n#include <vector>\n#include <chrono>\n#include <cassert>\n#include \"scalar.h\"\n#include \"neon_core.h\"\n\n// Объявляем твою функцию-обертку\nint64_t process_array_neon(const int32_t* data, size_t n);\n\nint main() {\n const size_t N = 1000000; // 1 миллион элементов для точности замера\n \n // Используем alignas(16) для эффективной загрузки данных в NEON [cite: 41, 89]\n alignas(16) std::vector<int32_t> data(N);\n \n // Заполняем массив случайными данными\n for (size_t i = 0; i < N; ++i) {\n data[i] = (rand() % 2000) - 1000; // Числа от -1000 до 999\n }\n\n // --- Тест Скалярной версии ---\n auto start_s = std::chrono::high_resolution_clock::now();\n int64_t res_scalar = process_array_scalar(data.data(), N);\n auto end_s = std::chrono::high_resolution_clock::now();\n std::chrono::duration<double, std::milli> elapsed_s = end_s - start_s;\n\n // --- Тест NEON версии ---\n auto start_n = std::chrono::high_resolution_clock::now();\n int64_t res_neon = process_array_neon(data.data(), N);\n auto end_n = std::chrono::high_resolution_clock::now();\n std::chrono::duration<double, std::milli> elapsed_n = end_n - start_n;\n\n // Проверка корректности (Валидация)\n std::cout << \"Scalar Result: \" << res_scalar << \"\\n\";\n std::cout << \"NEON Result: \" << res_neon << \"\\n\";\n \n if (res_scalar == res_neon) {\n std::cout << \"Validation: SUCCESS\\n\";\n } else {\n std::cerr << \"Validation: FAILED!\\n\";\n return 1;\n }\n\n // Отчет о производительности\n std::cout << \"Scalar Time: \" << elapsed_s.count() << \" ms\\n\";\n std::cout << \"NEON Time: \" << elapsed_n.count() << \" ms\\n\";\n std::cout << \"Speedup: \" << (elapsed_s.count() / elapsed_n.count()) << \"x\\n\";\n\n return 0;\n}"
+  },
+  {
+    "path": "./src/neon_wrapper.cpp",
+    "lines": 30,
+    "content": "#include \"neon_core.h\"\n#include <arm_neon.h>\n#include <cstdint>\n#include <cstddef>\n\nint64_t process_array_neon(const int32_t* data, size_t n) {\n int64_t sum = 0;\n // Инициализируем векторный аккумулятор нулями [cite: 53]\n int32x4_t acc = vdupq_n_s32(0); \n \n size_t i = 0;\n // Основной цикл: обрабатываем по 4 элемента за раз [cite: 55]\n for (; i + 3 < n; i += 4) {\n // Вызываем функцию Человека 2 и прибавляем результат к аккумулятору\n int32x4_t res = neon_process_chunk(data + i);\n acc = vaddq_s32(acc, res); \n }\n\n // Горизонтальное сложение: схлопываем 4 частичные суммы в одну [cite: 45, 71]\n // Примечание: vaddlvq_s32 доступна на ARMv8-A (64-бит) [cite: 74]\n sum = vaddlvq_s32(acc); \n\n // Обработка остатка (хвоста): от 0 до 3 элементов [cite: 72, 73]\n for (; i < n; ++i) {\n int32_t val = data[i];\n if (val > 0) sum += val;\n else if (val < 0) sum -= val; // Модуль для отрицательных [cite: 78, 79]\n }\n\n return sum;\n}"
+  },
+  {
+    "path": "./src/neon_core.cpp",
+    "lines": 23,
+    "content": "#include <arm_neon.h>\n#include <cstdint>\n\nint32x4_t neon_process_chunk(const int32_t* data) {\n int32x4_t vec = vld1q_s32(data);\n\n int32x4_t zero = vdupq_n_s32(0);\n\n int32x4_t mask_pos = vcgtq_s32(vec, zero);\n int32x4_t mask_neg = vcltq_s32(vec, zero);\n\n int32x4_t sign = vshrq_n_s32(vec, 31);\n\n int32x4_t abs_vec = veorq_s32(vec, sign);\n abs_vec = vsubq_s32(abs_vec, sign);\n\n int32x4_t pos_part = vandq_s32(vec, mask_pos);\n\n int32x4_t neg_part = vandq_s32(abs_vec, mask_neg);\n\n int32x4_t result = vorrq_s32(pos_part, neg_part);\n\n return result;\n}"
+  },
+  {
+    "path": "./src/neon_core.h",
+    "lines": 7,
+    "content": "#ifndef NEON_CORE_H\n#define NEON_CORE_H\n#include <arm_neon.h>\n#include <cstdint>\n\nint32x4_t neon_process_chunk(const int32_t* data);\n\n#endif"
+  },
+  {
+    "path": "./src/scalar.h",
+    "lines": 7,
+    "content": "#ifndef SCALAR_H\n#define SCALAR_H\n#include <cstdint>\n#include <cstddef>\n\nextern \"C\" int64_t process_array_scalar(const int32_t* data, size_t n);\n\n#endif"
+  }
+]

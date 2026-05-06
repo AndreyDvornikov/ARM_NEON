@@ -3,6 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-extern "C" int64_t process_array_scalar(const int32_t* data, size_t n);
+int64_t process_array_scalar(const int32_t* data, size_t n);
 
 #endif
