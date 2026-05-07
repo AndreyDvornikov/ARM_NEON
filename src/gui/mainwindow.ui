@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ARM NEON Array Processor</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="controlsGroupBox">
+      <property name="title">
+       <string>Controls</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="arraySizeLabel">
+         <property name="text">
+          <string>Array Size</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="arraySizeSpinBox"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="generateButton">
+         <property name="text">
+          <string>Generate Array</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="runScalarButton">
+         <property name="text">
+          <string>Run Scalar</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="runNeonButton">
+         <property name="text">
+          <string>Run NEON</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="runBenchmarkButton">
+         <property name="text">
+          <string>Run Benchmark</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="summaryGroupBox">
+      <property name="title">
+       <string>Last Run Summary</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="scalarTimeLabel">
+         <property name="text">
+          <string>Scalar Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="scalarTimeValueLabel">
+         <property name="text">
+          <string>N/A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="neonTimeLabel">
+         <property name="text">
+          <string>NEON Time</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QLabel" name="neonTimeValueLabel">
+         <property name="text">
+          <string>N/A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="speedupLabel">
+         <property name="text">
+          <string>Speedup</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="speedupValueLabel">
+         <property name="text">
+          <string>N/A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="scalarSumLabel">
+         <property name="text">
+          <string>Scalar Sum</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QLabel" name="scalarSumValueLabel">
+         <property name="text">
+          <string>N/A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="neonSumLabel">
+         <property name="text">
+          <string>NEON Sum</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="neonSumValueLabel">
+         <property name="text">
+          <string>N/A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="statusLabel">
+         <property name="text">
+          <string>Status</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <widget class="QLabel" name="statusValueLabel">
+         <property name="text">
+          <string>Idle</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="resultsGroupBox">
+      <property name="title">
+       <string>Benchmark Results</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableWidget" name="benchmarkTable">
+         <column>
+          <property name="text">
+           <string>Size</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Scalar ms</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>NEON ms</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Speedup</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Scalar Sum</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>NEON Sum</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Status</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

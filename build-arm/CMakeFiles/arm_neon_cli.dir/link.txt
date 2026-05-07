@@ -1,0 +1,1 @@
+/usr/bin/arm-linux-gnueabihf-g++ -O3 -DNDEBUG CMakeFiles/arm_neon_cli.dir/src/cli_main.cpp.o CMakeFiles/arm_neon_cli.dir/src/scalar.cpp.o CMakeFiles/arm_neon_cli.dir/src/neon.cpp.o CMakeFiles/arm_neon_cli.dir/src/benchmark.cpp.o -o arm_neon_cli 

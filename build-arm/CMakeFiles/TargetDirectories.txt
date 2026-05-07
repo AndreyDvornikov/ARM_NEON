@@ -1,0 +1,3 @@
+/home/avadik/Programming/ARM_NEON/build-arm/CMakeFiles/arm_neon_cli.dir
+/home/avadik/Programming/ARM_NEON/build-arm/CMakeFiles/edit_cache.dir
+/home/avadik/Programming/ARM_NEON/build-arm/CMakeFiles/rebuild_cache.dir

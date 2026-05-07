@@ -1,0 +1,6 @@
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/arm_neon_cli.dir
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/arm_neon_gui.dir
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/edit_cache.dir
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/rebuild_cache.dir
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/arm_neon_gui_autogen_timestamp_deps.dir
+/home/avadik/Programming/ARM_NEON/build/CMakeFiles/arm_neon_gui_autogen.dir
